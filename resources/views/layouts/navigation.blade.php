@@ -26,6 +26,12 @@
                         {{ __('Sale') }}
                     </x-nav-link>
                 </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('import-export')" :active="request()->routeIs('import-export')">
+                        {{ __('Import-Export') }}
+                    </x-nav-link>
+
+                </div>
             </div>
 
             <!-- Settings Dropdown -->
@@ -92,6 +98,9 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('customers.index')" :active="request()->routeIs('sales.index')">
                 {{ __('Sales') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('import-export')" :active="request()->routeIs('import-export')">
+                {{ __('Import-Export') }}
             </x-responsive-nav-link>
         </div>
 

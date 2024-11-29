@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\SalesEvent;
 use App\Models\Sale;
 use App\Models\Customer;
-use Illuminate\Http\Request;
+use App\Exports\SalesExport;
 use App\Imports\SalesImport;
+use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
 class SalesController extends Controller
@@ -39,8 +41,9 @@ class SalesController extends Controller
             'amount' => 'required|numeric|min:0',
         ]);
 
-        Sale::create($validated);
-
+        $sale = Sale::create($validated);
+        // Trigger the SalesEvent
+        event(new SalesEvent($sale));
         return redirect()->route('sales.index')->with('success', 'Sale added successfully!');
     }
 
@@ -84,6 +87,23 @@ class SalesController extends Controller
         return redirect()->route('sales.index')->with('success', 'Sale deleted successfully!');
     }
 
+    // Get all the deleted records
+    public function recycleBin()
+    {
+        $deletedSales = Sale::onlyTrashed()->with('customer')->paginate(10);
+        return view('sales.recycle-bin', compact('deletedSales'));
+    }
+
+    // Restore sales
+    public function restore($id)
+    {
+        $sale = Sale::onlyTrashed()->findOrFail($id);
+        $sale->restore();
+
+        return redirect()->route('sales.recycle-bin')->with('success', 'Sale restored successfully!');
+    }
+
+    // Import sales via CSV or Excel
     public function import(Request $request)
     {
         $request->validate([
@@ -93,5 +113,11 @@ class SalesController extends Controller
         Excel::import(new SalesImport, $request->file('file'));
 
         return redirect()->route('sales.index')->with('success', 'Sales imported successfully!');
+    }
+
+    // Export sales as CSV or Excel
+    public function export()
+    {
+        return Excel::download(new SalesExport, 'sales.xlsx');
     }
 }

@@ -9,7 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <div class="max-w-3xl mx-auto bg-white p-6 rounded shadow">
+                    <div class="mx-auto ">
 
                         <!-- Sale Details -->
                         <h1 class="text-xl font-bold mb-6">Sale Details</h1>

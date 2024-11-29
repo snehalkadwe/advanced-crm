@@ -1,9 +1,7 @@
-<!-- resources/views/customers/index.blade.php -->
-
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Customers') }}
+            {{ __('Recycle Bin') }}
         </h2>
     </x-slot>
 
@@ -18,52 +16,52 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <div class="flex justify-between mb-4">
-                        <h1 class="text-2xl font-bold">Customers</h1>
-                        <div>
-                            <a href="{{ route('customers.create') }}"
-                                class="bg-blue-500 text-white px-4 py-2 rounded mr-2">Add Customer</a>
-                            <a href="{{ route('customers.recycle-bin') }}"
-                                class="bg-gray-500 text-white px-4 py-2 rounded">Recycle Bin</a>
-                        </div>
+                        <h1 class="text-2xl font-bold">Recycle Bin</h1>
+                        <a href="{{ route('customers.index') }}" class="bg-blue-500 text-white px-4 py-2 rounded">Back
+                            to Customers</a>
                     </div>
 
-                    <!-- Customers Table -->
                     <table class="min-w-full bg-white border border-gray-200">
                         <thead>
                             <tr>
                                 <th class="px-4 py-2 border">Name</th>
                                 <th class="px-4 py-2 border">Email</th>
                                 <th class="px-4 py-2 border">Phone</th>
+                                <th class="px-4 py-2 border">Deleted At</th>
                                 <th class="px-4 py-2 border">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($customers as $customer)
+                            @forelse ($deletedCustomers as $customer)
                             <tr>
                                 <td class="px-4 py-2 border">{{ $customer->name }}</td>
                                 <td class="px-4 py-2 border">{{ $customer->email }}</td>
                                 <td class="px-4 py-2 border">{{ $customer->phone }}</td>
+                                <td class="px-4 py-2 border">{{ $customer->deleted_at->format('F d, Y h:i A') }}</td>
                                 <td class="px-4 py-2 border">
-                                    <a href="{{ route('customers.show', $customer) }}" class="text-blue-500">View</a> |
-                                    <a href="{{ route('customers.edit', $customer) }}" class="text-blue-500">Edit</a> |
-                                    <form action="{{ route('customers.destroy', $customer) }}" method="POST"
-                                        class="inline"
-                                        onsubmit="return confirm('Are you sure you want to delete this customer?');">
+                                    <!-- Restore Form -->
+                                    <form action="{{ route('customers.restore', $customer->id) }}" method="POST"
+                                        class="inline">
                                         @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="text-red-500">Delete</button>
+                                        <button type="submit" class="text-green-500 hover:underline">Restore</button>
                                     </form>
+
                                 </td>
                             </tr>
-                            @endforeach
+                            @empty
+                            <tr>
+                                <td colspan="5" class="text-center px-4 py-2 border text-gray-600">
+                                    No deleted customers found.
+                                </td>
+                            </tr>
+                            @endforelse
                         </tbody>
                     </table>
 
                     <!-- Pagination -->
                     <div class="mt-4">
-                        {{ $customers->links() }}
+                        {{ $deletedCustomers->links() }}
                     </div>
-
                 </div>
             </div>
         </div>

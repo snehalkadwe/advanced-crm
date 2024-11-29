@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Customer;
 use Illuminate\Http\Request;
+use App\Exports\CustomersExport;
+use App\Imports\CustomersImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CustomerController extends Controller
 {
@@ -74,7 +77,41 @@ class CustomerController extends Controller
      */
     public function destroy(Customer $customer)
     {
-        $customer->delete();
+        $customer->delete(); // Soft delete
         return redirect()->route('customers.index')->with('success', 'Customer deleted successfully!');
+    }
+
+    // Get all the deleted records
+    public function recycleBin()
+    {
+        $deletedCustomers = Customer::onlyTrashed()->paginate(10);
+        return view('customers.recycle-bin', compact('deletedCustomers'));
+    }
+
+    // Restore customer
+    public function restore($id)
+    {
+        $customer = Customer::onlyTrashed()->findOrFail($id);
+        $customer->restore();
+
+        return redirect()->route('customers.recycle-bin')->with('success', 'Customer restored successfully!');
+    }
+
+    // Import customers via CSV or Excel
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:csv,xlsx',
+        ]);
+
+        Excel::import(new CustomersImport, $request->file('file'));
+
+        return redirect()->route('customers.index')->with('success', 'Customers imported successfully!');
+    }
+
+    // Export customers as CSV or Excel
+    public function export()
+    {
+        return Excel::download(new CustomersExport, 'customers.xlsx');
     }
 }
