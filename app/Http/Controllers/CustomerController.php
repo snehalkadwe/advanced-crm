@@ -39,6 +39,13 @@ class CustomerController extends Controller
         return redirect()->route('customers.index')->with('success', 'Customer added successfully!');
     }
 
+    public function show(Customer $customer)
+    {
+        // Eager load sales for the customer
+        $customer->load('sales');
+        return view('customers.show', compact('customer'));
+    }
+
     /**
      * Show the form for editing the specified resource.
      */

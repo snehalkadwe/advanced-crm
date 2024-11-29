@@ -44,6 +44,12 @@ class SalesController extends Controller
         return redirect()->route('sales.index')->with('success', 'Sale added successfully!');
     }
 
+    public function show(Sale $sale)
+    {
+        return view('sales.show', compact('sale'));
+    }
+
+
     /**
      * Show the form for editing the specified resource.
      */
