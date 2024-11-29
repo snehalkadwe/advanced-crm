@@ -38,6 +38,7 @@ class SaleCreatedListner
     public function handle(SalesEvent $event)
     {
         $sale = $event->sale;
-        $sale->customer->notify(new SendSalesCreatedNotification);
+        $customer = $sale->customer;
+        $customer->notify(new SendSalesCreatedNotification());
     }
 }

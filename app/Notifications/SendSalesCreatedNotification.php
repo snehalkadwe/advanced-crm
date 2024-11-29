@@ -11,14 +11,12 @@ class SendSalesCreatedNotification extends Notification
 {
     use Queueable;
 
-    protected $customer;
-
     /**
      * Create a new notification instance.
      */
-    public function __construct($customer)
+    public function __construct()
     {
-        $this->customer = $customer;
+        //
     }
 
     /**
