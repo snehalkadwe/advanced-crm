@@ -11,6 +11,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
 
                 <!-- Customers Section -->
+                @if(auth()->user()->role == 'admin')
                 <div class="bg-white p-6 rounded shadow">
                     <h3 class="text-xl font-bold mb-4">Customer Data</h3>
 
@@ -34,8 +35,10 @@
                         class="mt-4 inline-block bg-blue-500 text-white px-4 py-2 rounded-md shadow hover:bg-blue-600">Export
                         Customers</a>
                 </div>
+                @endif
 
-                <!-- Sales Section -->
+                <!-- Sales Secion -->
+                @if(in_array(auth()->user()->role, ['admin', 'sales_manager']))
                 <div class="bg-white p-6 rounded shadow">
                     <h3 class="text-xl font-bold mb-4">Sales Data</h3>
 
@@ -58,6 +61,7 @@
                         class="mt-4 inline-block bg-blue-500 text-white px-4 py-2 rounded-md shadow hover:bg-blue-600">Export
                         Sales</a>
                 </div>
+                @endif
             </div>
         </div>
     </div>

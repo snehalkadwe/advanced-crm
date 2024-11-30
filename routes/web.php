@@ -17,31 +17,36 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Route::middleware( 'role:admin'])->group(function () {
-    // Recycle Bin Routes
-    Route::prefix('customers')->name('customers.')->group(function () {
-        Route::get('/recycle-bin', [CustomerController::class, 'recycleBin'])->name('recycle-bin');
-        Route::post('/restore/{id}', [CustomerController::class, 'restore'])->name('restore');
-        Route::post('/import', [CustomerController::class, 'import'])->name('import');
-        Route::get('/export', [CustomerController::class, 'export'])->name('export');
-    });
-    Route::prefix('sales')->name('sales.')->group(function () {
-        Route::get('/recycle-bin', [SalesController::class, 'recycleBin'])->name('recycle-bin');
-        Route::post('/restore/{id}', [SalesController::class, 'restore'])->name('restore');
-        Route::post('/import', [SalesController::class, 'import'])->name('import');
-        Route::get('/export', [SalesController::class, 'export'])->name('export');
-    });
-    Route::resource('customers', CustomerController::class);
-    Route::resource('sales', SalesController::class);
-    // });
+    Route::middleware('role:admin')->group(function () {
+        // Admin-specific routes
+        Route::get('/import-export', function () {
+            return view('import-export');
+        })->name('import-export');
 
-    Route::get('/import-export', function () {
-        return view('import-export');
-    })->name('import-export');
+        // Recycle Bin Routes for Customers
+        Route::prefix('customers')->name('customers.')->group(function () {
+            Route::get('/recycle-bin', [CustomerController::class, 'recycleBin'])->name('recycle-bin');
+            Route::post('/restore/{id}', [CustomerController::class, 'restore'])->name('restore');
+            Route::post('/import', [CustomerController::class, 'import'])->name('import');
+            Route::get('/export', [CustomerController::class, 'export'])->name('export');
+        });
+        // Full Resource Routes for Customers
+        Route::resource('customers', CustomerController::class);
+    });
 
-    // Route::middleware(['auth', 'role:salesManager'])->group(function () {
-    Route::resource('sales', SalesController::class)->only(['index', 'create', 'store']);
-    // });
+    // Admins can also access sales-related routes as well as sales manager
+    Route::middleware('role:sales_manager|admin')->group(function () {
+        Route::prefix('sales')->name('sales.')->group(function () {
+            Route::get('/recycle-bin', [SalesController::class, 'recycleBin'])->name('recycle-bin');
+            Route::post('/restore/{id}', [SalesController::class, 'restore'])->name('restore');
+            Route::post('/import', [SalesController::class, 'import'])->name('import');
+            Route::get('/export', [SalesController::class, 'export'])->name('export');
+        });
+        Route::resource('sales', SalesController::class);
+        Route::get('/import-export', function () {
+            return view('import-export');
+        })->name('import-export');
+    });
 });
 
 

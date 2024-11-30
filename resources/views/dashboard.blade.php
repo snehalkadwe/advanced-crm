@@ -7,8 +7,9 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            {{-- sales manager role --}}
+            @if(auth()->user()->role == 'admin')
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
-
                 <!-- Date Range Filter -->
                 <form method="GET" action="{{ route('dashboard') }}" class="mb-6 flex items-center space-x-4">
                     <div>
@@ -51,6 +52,42 @@
                     </div>
                 </div>
             </div>
+            @else
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+                <!-- Date Range Filter -->
+                <form method="GET" action="{{ route('dashboard') }}" class="mb-6 flex items-center space-x-4">
+                    <div>
+                        <label for="start_date" class="block text-sm font-medium text-gray-700">Start Date</label>
+                        <input type="date" id="start_date" name="start_date" value="{{ $startDate }}"
+                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                    </div>
+                    <div>
+                        <label for="end_date" class="block text-sm font-medium text-gray-700">End Date</label>
+                        <input type="date" id="end_date" name="end_date" value="{{ $endDate }}"
+                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                    </div>
+                    <div class="mt-6">
+                        <button type="submit"
+                            class="bg-blue-500 text-white px-4 py-2 rounded-md shadow hover:bg-blue-600">Filter</button>
+                    </div>
+                </form>
+                <!-- Total Customers and Sales Value -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                    <div class="bg-gray-100 p-4 rounded shadow">
+                        <h3 class="text-lg font-medium">Total Sales Value</h3>
+                        <p class="text-2xl font-bold">${{ number_format($totalSalesValue, 2) }}</p>
+                    </div>
+                </div>
+
+                <!-- Charts -->
+                <div class="grid grid-cols-1 sm:grid-cols-1 gap-6">
+                    <div class="bg-gray-100 p-4 rounded shadow">
+                        <h3 class="text-lg font-medium mb-4">Monthly Sales Trends</h3>
+                        <canvas id="salesTrendChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            @endif
         </div>
     </div>
 
