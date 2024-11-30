@@ -40,10 +40,9 @@ class SaleCreatedListner
     {
         $sale = $event->sale;
         $customer = $sale->customer;
-        // $customer->notify(new SendSalesCreatedNotification($sale));
+        $customer->notify(new SendSalesCreatedNotification($sale));
         $smsMessage =
             "A new sale has been added for you: " . $sale->product_name . ' ' . $sale->amount;
-        // dd($smsMessage);
         $customer->notify(new SmsNotification($smsMessage));
     }
 }
