@@ -36,8 +36,8 @@ return [
     ],
 
     'twilio' => [
-        'sid' => env('TWILIO_SID', 'ACb699cdf8dbbb6c43f9bd55e5bcb33c5b'),
-        'token' => env('TWILIO_AUTH_TOKEN', '920a441e7ad6da2e9ea933bd1e27965c'),
-        'from' => env('TWILIO_PHONE_NUMBER', '+17753068241'),
+        'sid' => env('TWILIO_SID'),
+        'token' => env('TWILIO_AUTH_TOKEN'),
+        'from' => env('TWILIO_PHONE_NUMBER'),
     ],
 ];
