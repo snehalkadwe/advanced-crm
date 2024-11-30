@@ -12,12 +12,12 @@ class CustomersImport implements ToModel
      *
      * @return \Illuminate\Database\Eloquent\Model|null
      */
-    public function model(array $row)
+    public function collection()
     {
         return new Customer([
-            'name' => $row['name'],
-            'email' => $row['email'],
-            'phone' => $row['phone'],
+            'name' => $row[0],
+            'email' => $row[1],
+            'phone' => $row[2],
         ]);
     }
 }

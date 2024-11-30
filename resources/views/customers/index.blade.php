@@ -1,5 +1,3 @@
-<!-- resources/views/customers/index.blade.php -->
-
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -17,11 +15,19 @@
 
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <div class="flex justify-between mb-4">
+                    <!-- Header Section -->
+                    <div class="flex justify-between items-center mb-4">
                         <h1 class="text-2xl font-bold">Customers</h1>
                         <div>
+                            <!-- Search Form -->
+                            <form action="{{ route('customers.index') }}" method="GET" class="inline">
+                                <input type="text" name="search" placeholder="Search customers..."
+                                    value="{{ request('search') }}"
+                                    class="border border-gray-300 rounded-md px-3 py-2 focus:ring focus:ring-blue-200">
+                                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Search</button>
+                            </form>
                             <a href="{{ route('customers.create') }}"
-                                class="bg-blue-500 text-white px-4 py-2 rounded mr-2">Add Customer</a>
+                                class="bg-blue-500 text-white px-4 py-2 rounded ml-2">Add Customer</a>
                             <a href="{{ route('customers.recycle-bin') }}"
                                 class="bg-gray-500 text-white px-4 py-2 rounded">Recycle Bin</a>
                         </div>
@@ -38,7 +44,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($customers as $customer)
+                            @forelse ($customers as $customer)
                             <tr>
                                 <td class="px-4 py-2 border">{{ $customer->name }}</td>
                                 <td class="px-4 py-2 border">{{ $customer->email }}</td>
@@ -55,12 +61,17 @@
                                     </form>
                                 </td>
                             </tr>
-                            @endforeach
+                            @empty
+                            <tr>
+                                <td colspan="4" class="text-center px-4 py-2 border text-gray-600">No customers found.
+                                </td>
+                            </tr>
+                            @endforelse
                         </tbody>
                     </table>
 
                     <!-- Pagination -->
-                    <div class="mt-4">
+                    <div class="mt-5">
                         {{ $customers->links() }}
                     </div>
 

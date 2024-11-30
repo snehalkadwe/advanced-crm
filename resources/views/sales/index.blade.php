@@ -17,6 +17,13 @@
                     <div class="flex justify-between mb-4">
                         <h1 class="text-2xl font-bold">Sales</h1>
                         <div>
+                            <!-- Search Form -->
+                            <form action="{{ route('sales.index') }}" method="GET" class="inline">
+                                <input type="text" name="search" placeholder="Search Sales..."
+                                    value="{{ request('search') }}"
+                                    class="border border-gray-300 rounded-md px-3 py-2 focus:ring focus:ring-blue-200">
+                                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Search</button>
+                            </form>
                             <a href="{{ route('sales.create') }}"
                                 class="bg-blue-500 text-white px-4 py-2 rounded mr-2">Add Sales</a>
                             <a href="{{ route('sales.recycle-bin') }}"
@@ -51,8 +58,9 @@
                             @endforeach
                         </tbody>
                     </table>
-
-                    {{ $sales->links() }}
+                    <div class="mt-5">
+                        {{ $sales->links() }}
+                    </div>
                 </div>
             </div>
         </div>

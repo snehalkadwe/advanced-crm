@@ -13,11 +13,24 @@ use Maatwebsite\Excel\Facades\Excel;
 class SalesController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the sales.
      */
-    public function index()
+
+    public function index(Request $request)
     {
-        $sales = Sale::with('customer')->paginate(10); // Include related customer data
+        $search = $request->input('search');
+
+        $sales = Sale::with('customer')
+            ->when($search, function ($query, $search) {
+                return $query->where('product_name', 'like', "%{$search}%")
+                    ->orWhereHas('customer', function ($query) use ($search) {
+                        $query->where('name', 'like', "%{$search}%")
+                            ->orWhere('email', 'like', "%{$search}%");
+                    });
+            })
+            ->paginate(10)
+            ->appends(['search' => $search]); // Append search query to pagination links
+
         return view('sales.index', compact('sales'));
     }
 

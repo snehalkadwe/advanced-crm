@@ -4,6 +4,7 @@ namespace App\Events;
 
 use App\Events\SalesEvent;
 use Illuminate\Broadcasting\Channel;
+use App\Notifications\SmsNotification;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -39,6 +40,10 @@ class SaleCreatedListner
     {
         $sale = $event->sale;
         $customer = $sale->customer;
-        $customer->notify(new SendSalesCreatedNotification());
+        // $customer->notify(new SendSalesCreatedNotification($sale));
+        $smsMessage =
+            "A new sale has been added for you: " . $sale->product_name . ' ' . $sale->amount;
+        // dd($smsMessage);
+        $customer->notify(new SmsNotification($smsMessage));
     }
 }

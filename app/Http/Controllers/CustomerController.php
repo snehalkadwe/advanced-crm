@@ -11,11 +11,20 @@ use Maatwebsite\Excel\Facades\Excel;
 class CustomerController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the customers.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $customers = Customer::paginate(10);
+        $search = $request->input('search');
+        $customers = Customer::query()
+            ->when($search, function ($query) use ($search) {
+                return $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('phone', 'like', "%{$search}%");
+            })
+            ->paginate(10)
+            ->appends(['search' => $search]); // Append search query to pagination links
+
         return view('customers.index', compact('customers'));
     }
 
