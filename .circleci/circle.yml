@@ -20,6 +20,10 @@ jobs:
           key: v1-dependencies-{{ checksum "composer.json" }}
           paths:
             - ./vendor
+
+      - run:
+          name: Build Vite
+          command: npm run build
   deploy_app:
     executor: heroku/default
     steps:
@@ -27,6 +31,9 @@ jobs:
       - heroku/install
       - heroku/deploy-via-git:
           force: true
+          git:
+            add:
+              - public/
       - run:
           command: |
             heroku run --app=${HEROKU_APP_NAME} php artisan migrate
