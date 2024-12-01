@@ -12,9 +12,7 @@ export default defineConfig({
         outDir: "public/build", // Ensure output goes to public/build
         manifest: true, // Generate a manifest.json file
         rollupOptions: {
-            input: {
-                app: "resources/js/app.js",
-            },
+            input: ["resources/css/app.css", "resources/js/app.js"],
         },
         emptyOutDir: true, // Clears the build folder before building
     },
