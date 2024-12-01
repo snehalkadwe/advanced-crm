@@ -99,7 +99,7 @@
             <x-responsive-nav-link :href="route('customers.index')" :active="request()->routeIs('customers.index')">
                 {{ __('Customer') }}
             </x-responsive-nav-link>
-            @end
+            @endif
             <x-responsive-nav-link :href="route('sales.index')" :active="request()->routeIs('sales.index')">
                 {{ __('Sales') }}
             </x-responsive-nav-link>
