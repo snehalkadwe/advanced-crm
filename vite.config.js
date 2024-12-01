@@ -10,7 +10,7 @@ export default defineConfig({
         }),
     ],
     build: {
-        outDir: path.resolve(__dirname, "public/build"), // Ensure output goes to public/build
+        outDir: path.resolve(__dirname, "public/build/vite"), // Ensure output goes to public/build
         manifest: true, // Generate a manifest.json file
         rollupOptions: {
             input: {
