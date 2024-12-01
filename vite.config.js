@@ -10,15 +10,13 @@ export default defineConfig({
         }),
     ],
     build: {
-        outDir: path.resolve(__dirname, "public/build/vite"), // Ensure output goes to public/build
+        outDir: path.resolve(__dirname, "public/build"), // Ensure output goes to public/build
         manifest: true, // Generate a manifest.json file
-        rollupOptions: {
-            input: {
-                // Specify the entry points for your app (you may already have these)
-                app: path.resolve(__dirname, "resources/js/app.js"),
-                style: path.resolve(__dirname, "resources/css/app.css"),
-            },
-        },
+        // rollupOptions: {
+        //     input: {
+        //         app: "resources/js/app.js",
+        //     },
+        // },
         emptyOutDir: true, // Clears the build folder before building
     },
 });
