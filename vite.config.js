@@ -16,5 +16,6 @@ export default defineConfig({
                 main: "resources/js/app.js",
             },
         },
+        emptyOutDir: true, // Clears the build folder before building
     },
 });
