@@ -5,22 +5,28 @@ jobs:
   build:
     docker:
       - image: cimg/php:8.2.5
-
     steps:
       - checkout
+      # Install Node.js and npm
+      - run:
+          name: Install Node.js
+          command: |
+            curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
+            apt-get install -y nodejs
       # Download and cache dependencies
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "composer.json" }}
       - run:
-          name: "Install Dependencies"
+          name: "Install PHP Dependencies"
           command: composer install -n --prefer-dist
-
       - save_cache:
           key: v1-dependencies-{{ checksum "composer.json" }}
           paths:
             - ./vendor
-
+      - run:
+          name: Install JS Dependencies
+          command: npm install
       - run:
           name: Build Vite
           command: npm run build
@@ -35,6 +41,7 @@ jobs:
       - run:
           command: |
             heroku run --app=${HEROKU_APP_NAME} php artisan migrate
+
 workflows:
   deploy:
     jobs:
