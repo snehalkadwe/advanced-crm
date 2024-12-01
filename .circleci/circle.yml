@@ -29,6 +29,10 @@ jobs:
             mkdir -p public/build
             mv public/build/.vite/manifest.json public/build/
             rm -rf public/build/.vite
+      - run:
+          name: Set Build Folder Permissions
+          command: chmod -R 755 public/build
+
       # Download and cache PHP dependencies
       - restore_cache:
           keys:
