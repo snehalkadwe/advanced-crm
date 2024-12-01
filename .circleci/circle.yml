@@ -20,6 +20,12 @@ jobs:
           key: v1-dependencies-{{ checksum "composer.json" }}
           paths:
             - ./vendor
+
+      # Add Vite build step
+      - run:
+        name: Build Vite
+        command: npm run build
+
   deploy_app:
     executor: heroku/default
     steps:
