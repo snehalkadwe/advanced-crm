@@ -32,9 +32,6 @@ jobs:
       - heroku/install
       - heroku/deploy-via-git:
           force: true
-          git:
-            add:
-              - public/
       - run:
           command: |
             heroku run --app=${HEROKU_APP_NAME} php artisan migrate
