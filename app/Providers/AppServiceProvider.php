@@ -6,6 +6,7 @@ use App\Events\SalesEvent;
 use App\Events\SaleCreatedListner;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -14,7 +15,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        if (env('APP_ENV') !== 'local') {
+            URL::forceScheme('https');
+        }
     }
 
     /**
