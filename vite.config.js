@@ -1,5 +1,6 @@
 import { defineConfig } from "vite";
 import laravel from "laravel-vite-plugin";
+import path from "path";
 
 export default defineConfig({
     plugins: [
@@ -9,11 +10,13 @@ export default defineConfig({
         }),
     ],
     build: {
-        outDir: "public/build",
-        manifest: true,
+        outDir: path.resolve(__dirname, "public/build"), // Ensure output goes to public/build
+        manifest: true, // Generate a manifest.json file
         rollupOptions: {
             input: {
-                main: "resources/js/app.js",
+                // Specify the entry points for your app (you may already have these)
+                app: path.resolve(__dirname, "resources/js/app.js"),
+                style: path.resolve(__dirname, "resources/css/app.css"),
             },
         },
         emptyOutDir: true, // Clears the build folder before building
