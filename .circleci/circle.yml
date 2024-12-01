@@ -24,6 +24,7 @@ jobs:
       - run:
           name: Build Vite
           command: npm run build
+
   deploy_app:
     executor: heroku/default
     steps:
