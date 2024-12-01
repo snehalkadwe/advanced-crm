@@ -14,6 +14,21 @@ jobs:
             sudo apt-get update
             curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
             sudo apt-get install -y nodejs
+      # Install dependencies
+      - run:
+          name: Install JS Dependencies
+          command: npm install
+      # Build Vite assets
+      - run:
+          name: Build Vite
+          command: npm run build
+      # Move manifest.json to public/build
+      - run:
+          name: Move Manifest to Build Folder
+          command: |
+            mkdir -p public/build
+            mv public/build/.vite/manifest.json public/build/
+            rm -rf public/build/.vite
       # Download and cache PHP dependencies
       - restore_cache:
           keys:
@@ -25,13 +40,6 @@ jobs:
           key: v1-dependencies-{{ checksum "composer.json" }}
           paths:
             - ./vendor
-      # Install JavaScript dependencies and build Vite assets
-      - run:
-          name: Install JS Dependencies
-          command: npm install
-      - run:
-          name: Build Vite
-          command: npm run build
 
   deploy_app:
     executor: heroku/default
@@ -49,6 +57,12 @@ jobs:
       - run:
           name: Build Vite
           command: npm run build
+      - run:
+          name: Move Manifest to Build Folder
+          command: |
+            mkdir -p public/build
+            mv public/build/.vite/manifest.json public/build/
+            rm -rf public/build/.vite
       - heroku/deploy-via-git:
           force: true
       - run:
