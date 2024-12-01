@@ -37,6 +37,17 @@ jobs:
     steps:
       - checkout
       - heroku/install
+       - run:
+        name: Install Node.js
+        command: |
+          curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+          sudo apt-get install -y nodejs
+    - run:
+        name: Install JS Dependencies
+        command: npm install
+    - run:
+        name: Build Vite
+        command: npm run build
       - heroku/deploy-via-git:
           force: true
       - run:
