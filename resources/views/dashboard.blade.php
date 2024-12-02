@@ -92,7 +92,6 @@
     </div>
 
     @push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         // Monthly Sales Trends Chart
         const salesTrendCtx = document.getElementById('salesTrendChart').getContext('2d');
