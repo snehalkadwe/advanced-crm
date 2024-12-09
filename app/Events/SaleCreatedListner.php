@@ -41,8 +41,8 @@ class SaleCreatedListner
         $sale = $event->sale;
         $customer = $sale->customer;
         $customer->notify(new SendSalesCreatedNotification($sale));
-        // $smsMessage =
-        //     "A new sale has been added for you: " . $sale->product_name . ' ' . $sale->amount;
-        // $customer->notify(new SmsNotification($smsMessage));
+        $smsMessage =
+            "A new sale has been added for you: " . $sale->product_name . ' ' . $sale->amount;
+        $customer->notify(new SmsNotification($smsMessage));
     }
 }

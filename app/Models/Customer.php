@@ -17,4 +17,14 @@ class Customer extends Model
     {
         return $this->hasMany(Sale::class);
     }
+
+    /**
+     * Route notifications for Twilio.
+     *
+     * @return string
+     */
+    public function routeNotificationForTwilio()
+    {
+        return $this->phone; // Ensure the `phone` is available on the notifiable
+    }
 }

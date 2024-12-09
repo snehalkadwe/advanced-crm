@@ -8,6 +8,7 @@ use Illuminate\Notifications\Notification;
 use NotificationChannels\Twilio\TwilioChannel;
 use NotificationChannels\Twilio\TwilioSmsMessage;
 
+
 class SmsNotification extends Notification
 {
     use Queueable;
@@ -41,18 +42,8 @@ class SmsNotification extends Notification
      */
     public function toTwilio($notifiable)
     {
+        Log::debug($notifiable);
         return (new TwilioSmsMessage())
             ->content($this->smsMessage); // Use the dynamic message
-    }
-
-    /**
-     * Route notifications for Twilio.
-     *
-     * @param mixed $notifiable
-     * @return string
-     */
-    public function routeNotificationForTwilio($notifiable)
-    {
-        return $notifiable->phone; // Ensure the `phone` is available on the notifiable
     }
 }
