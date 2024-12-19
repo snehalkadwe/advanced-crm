@@ -85,13 +85,15 @@
                         <h3 class="text-lg font-medium mb-4">Monthly Sales Trends</h3>
                         <canvas id="salesTrendChart"></canvas>
                     </div>
+                    <div class="bg-gray-100 p-4 rounded shadow">
+                        <h3 class="text-lg font-medium mb-4">Top 5 Customers</h3>
+                        <canvas id="topCustomersChart"></canvas>
+                    </div>
                 </div>
             </div>
             @endif
         </div>
     </div>
-
-    @push('scripts')
     <script>
         // Monthly Sales Trends Chart
         const salesTrendCtx = document.getElementById('salesTrendChart').getContext('2d');
@@ -182,5 +184,4 @@
             }
         });
     </script>
-    @endpush
 </x-app-layout>
